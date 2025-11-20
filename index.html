@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Adaptive Quiz Engine (Beginner)</title>
+  <!-- External CSS Link -->
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Adaptive Quiz Engine — Simple Beginner Version</h1>
+    </header>
+
+    <div class="card">
+      <div class="question-area">
+        <div id="meta" class="small muted">Question <span id="qIndex">0</span> / <span id="qTotal">0</span> — difficulty: <span id="qDifficulty">-</span></div>
+        <h2 id="questionText">Loading...</h2>
+        <div class="options" id="options"></div>
+        <div>
+          <button id="submitBtn">Submit Answer</button>
+          <button id="nextBtn" class="ghost" style="display:none">Next Question</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Analytics</h3>
+      <div class="analytics">
+        <div class="stat">
+          <div class="muted">Answered</div>
+          <div id="answeredCount">0</div>
+        </div>
+        <div class="stat">
+          <div class="muted">Correct</div>
+          <div id="correctCount">0</div>
+        </div>
+        <div class="stat">
+          <div class="muted">Accuracy</div>
+          <div id="accuracy">0%</div>
+        </div>
+        <div class="stat">
+          <div class="muted">Avg Difficulty (score)</div>
+          <div id="avgDifficulty">0</div>
+        </div>
+      </div>
+      <div style="margin-top:12px">
+        <canvas id="chart" width="600" height="120"></canvas>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Admin: Question Bank (Edit / Add)</h3>
+      <p class="small muted">Add new questions quickly (beginner-friendly format)</p>
+      <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center">
+        <input id="qTextIn" type="text" placeholder="Question text" style="flex:2" />
+        <input id="optA" type="text" placeholder="Option A" />
+        <input id="optB" type="text" placeholder="Option B" />
+        <input id="optC" type="text" placeholder="Option C" />
+        <input id="correct" type="text" placeholder="Correct option (A/B/C)" style="width:90px" />
+        <select id="difficulty" aria-label="difficulty">
+          <option value="easy">easy</option>
+          <option value="medium" selected>medium</option>
+          <option value="hard">hard</option>
+        </select>
+        <button id="addQ">Add Question</button>
+      </div>
+      <p class="small muted">Existing questions (click to remove)</p>
+      <pre id="bankList"></pre>
+      <div style="margin-top:8px">
+        <button id="resetBtn" class="ghost">Reset Progress</button>
+      </div>
+    </div>
+
+    <footer>
+      <div class="small muted">This is a small demo — open the browser console to see logs. Modify the question bank or code to learn.</div>
+    </footer>
+  </div>
+
+  <!-- External JavaScript File -->
+<script src="script.js"></script>
+</body>
+</html>
