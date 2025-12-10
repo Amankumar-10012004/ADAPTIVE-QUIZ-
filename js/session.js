@@ -22,7 +22,9 @@ export async function startQuiz(subject) {
             ability: 1.0, // Always start at Easy (1.0) for every subject, every time
             score: 0,
             totalQuestions: 0,
-            history: []
+            history: [],
+            correctStreakAtCurrentLevel: 0, // Track consecutive correct answers at current difficulty
+            thresholdToNextLevel: Math.floor(Math.random() * 2) + 2 // Random threshold: 2 or 3
         };
 
         // Fetch past attempts to filter out old questions if possible
@@ -41,11 +43,13 @@ export async function startQuiz(subject) {
     }
 }
 
+const MAX_QUESTIONS = 10; // Maximum questions per quiz session
+
 export async function nextQuestion() {
     if (!currentSession) return;
 
     // Check if we should end (e.g., max 10 questions)
-    if (currentSession.totalQuestions >= 10) {
+    if (currentSession.totalQuestions >= MAX_QUESTIONS) {
         endQuiz();
         return;
     }
@@ -59,7 +63,7 @@ export async function nextQuestion() {
     }
 
     currentSession.currentQuestion = question;
-    renderQuestion(question, currentSession.totalQuestions + 1);
+    renderQuestion(question, currentSession.totalQuestions + 1, MAX_QUESTIONS);
 }
 
 export async function submitAnswer(selectedOption) {
@@ -72,10 +76,27 @@ export async function submitAnswer(selectedOption) {
     currentSession.totalQuestions++;
     if (isCorrect) currentSession.score++;
 
-    // Update ability
+    // Update ability using threshold-based progression
     const oldAbility = currentSession.ability;
-    // Always calculate new ability (even if skipped/null) to allow downgrade
-    currentSession.ability = calculateNewAbility(oldAbility, isCorrect, question.difficulty);
+
+    if (isCorrect) {
+        // Increment correct streak at current level
+        currentSession.correctStreakAtCurrentLevel++;
+
+        // Check if threshold is met to advance difficulty
+        if (currentSession.correctStreakAtCurrentLevel >= currentSession.thresholdToNextLevel) {
+            // Increase difficulty
+            currentSession.ability = calculateNewAbility(oldAbility, true, question.difficulty);
+            // Reset streak and set new random threshold for next level
+            currentSession.correctStreakAtCurrentLevel = 0;
+            currentSession.thresholdToNextLevel = Math.floor(Math.random() * 2) + 2; // 2 or 3
+        }
+        // else: keep ability the same (don't increase yet)
+    } else {
+        // Incorrect or skipped: reset streak but keep difficulty the same
+        currentSession.correctStreakAtCurrentLevel = 0;
+        // Ability stays the same (no decrease)
+    }
 
     // Record attempt
     const attempt = {
@@ -120,3 +141,5 @@ export async function endQuiz(redirect = false) {
     }
     currentSession = null;
 }
+
+
