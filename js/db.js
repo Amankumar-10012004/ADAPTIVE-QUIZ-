@@ -1,6 +1,6 @@
 
 const DB_NAME = 'quiz-engine';
-const DB_VERSION = 3;
+const DB_VERSION = 4;
 
 /**
  * Open (or create) the IndexedDB database for the quiz app.
@@ -141,3 +141,5 @@ export async function deleteQuestion(questionId) {
         request.onerror = () => reject(request.error);
     });
 }
+
+
