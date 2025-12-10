@@ -28,8 +28,9 @@ export function showSection(sectionName) {
     }
 }
 
-export function renderQuestion(question, index) {
+export function renderQuestion(question, index, totalQuestions = 10) {
     document.getElementById('qIndex').textContent = index;
+    document.getElementById('qTotal').textContent = totalQuestions;
     document.getElementById('qDifficulty').textContent = question.difficulty;
     document.getElementById('questionText').textContent = question.text;
 
@@ -211,3 +212,5 @@ export function showResults(session) {
         analyticsCard.appendChild(backBtn);
     }
 }
+
+
